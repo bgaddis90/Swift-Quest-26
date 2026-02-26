@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IDS 2935: All Too Well: Understanding Relationships through Taylor Swift</title>
+  <meta name="description" content="An in-person Fall 2026 course exploring Taylor Swift’s music, storytelling, and fandom to understand interpersonal communication, particularly love, friendship, identity, conflict, privacy, and digital intimacy." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold: #f7d286;
+      --mist: #edf3ff;
+      --ink: #f6f6f9;
+      --accent: #f86824;
+      --panel: #091427;
+      --panel-soft: #101f39;
+      --border: rgba(255, 255, 255, 0.15);
+      --shadow: 0 20px 45px rgba(0, 0, 0, 0.42);
+      --teaser-duration: 13000ms;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Manrope", "Avenir Next", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #050811;
+    }
+
+    body.locked {
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .teaser {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      isolation: isolate;
+      background-image: url("./All too well class..png");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .teaser::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: transparent;
+      z-index: -1;
+    }
+
+    .lyrics-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .lyric {
+      position: absolute;
+      max-width: min(42ch, 74vw);
+      font-family: "Cinzel", Georgia, serif;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      font-size: clamp(1.1rem, 2vw, 1.9rem);
+      color: var(--mist);
+      text-shadow:
+        0 1px 1px rgba(0, 0, 0, 0.75),
+        0 0 2px rgba(0, 0, 0, 0.65);
+      will-change: transform, opacity;
+      backface-visibility: hidden;
+      opacity: 0;
+      transform: translate3d(var(--from-x), var(--from-y), 0) scale(0.75) rotate(var(--rot));
+      animation:
+        lyric-arrival var(--arrive-duration) cubic-bezier(0.19, 0.93, 0.34, 1) var(--delay) forwards,
+        lyric-hover var(--hover-duration) ease-in-out calc(var(--delay) + var(--arrive-duration)) infinite alternate;
+    }
+
+    .lyric:nth-child(1) {
+      left: 6%;
+      top: 17%;
+      --from-x: -32vw;
+      --from-y: -20vh;
+      --rot: -7deg;
+      --delay: 500ms;
+      --arrive-duration: 1800ms;
+      --hover-duration: 5200ms;
+      --hover-x: 10px;
+      --hover-y: -6px;
+      --hover-rot: 1deg;
+      --to-x: 0px;
+      --to-y: 0px;
+      --to-rot: -8deg;
+      --blow-delay: 0ms;
+    }
+
+    .lyric:nth-child(2) {
+      right: 7%;
+      top: 26%;
+      text-align: right;
+      --from-x: 28vw;
+      --from-y: -20vh;
+      --rot: 8deg;
+      --delay: 2100ms;
+      --arrive-duration: 2300ms;
+      --hover-duration: 6100ms;
+      --hover-x: -8px;
+      --hover-y: -8px;
+      --hover-rot: -1deg;
+      --to-x: 0px;
+      --to-y: 0px;
+      --to-rot: 8deg;
+      --blow-delay: 160ms;
+    }
+
+    .lyric:nth-child(3) {
+      left: 9%;
+      bottom: 27%;
+      --from-x: -34vw;
+      --from-y: 22vh;
+      --rot: -6deg;
+      --delay: 3700ms;
+      --arrive-duration: 2500ms;
+      --hover-duration: 5700ms;
+      --hover-x: 9px;
+      --hover-y: 7px;
+      --hover-rot: 1deg;
+      --to-x: 0px;
+      --to-y: 0px;
+      --to-rot: -7deg;
+      --blow-delay: 300ms;
+    }
+
+    .lyric:nth-child(4) {
+      right: 9%;
+      bottom: 20%;
+      text-align: right;
+      --from-x: 34vw;
+      --from-y: 20vh;
+      --rot: 6deg;
+      --delay: 5400ms;
+      --arrive-duration: 1900ms;
+      --hover-duration: 6400ms;
+      --hover-x: -10px;
+      --hover-y: 6px;
+      --hover-rot: -1deg;
+      --to-x: 0px;
+      --to-y: 0px;
+      --to-rot: 9deg;
+      --blow-delay: 450ms;
+    }
+
+    .lyric:nth-child(5) {
+      left: 24%;
+      right: 24%;
+      top: 46%;
+      text-align: center;
+      transform-origin: center;
+      --from-x: 0;
+      --from-y: -24vh;
+      --rot: -2deg;
+      --delay: 7100ms;
+      --arrive-duration: 2800ms;
+      --hover-duration: 5400ms;
+      --hover-x: 0px;
+      --hover-y: -9px;
+      --hover-rot: 0.5deg;
+      --to-x: 0px;
+      --to-y: 0px;
+      --to-rot: 6deg;
+      --blow-delay: 620ms;
+    }
+
+    .teaser.bursting .lyric {
+      animation: lyric-converge 2400ms cubic-bezier(0.24, 0.78, 0.22, 1) var(--blow-delay) forwards;
+    }
+
+    .teaser.bursting .main-title {
+      animation: title-materialize 1600ms ease-out 1700ms forwards;
+    }
+
+    .main-title {
+      position: relative;
+      top: -6.6rem;
+      width: min(900px, 90vw);
+      text-align: center;
+      opacity: 0;
+      transform: scale(0.86) translateY(16px);
+      transition: opacity 900ms ease, transform 900ms ease;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    .main-title h1 {
+      margin: 0;
+      font-family: "Cinzel", Georgia, serif;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: none;
+      font-size: clamp(1.35rem, 3.3vw, 2.75rem);
+      line-height: 1.3;
+      text-shadow: none;
+    }
+
+    .hero-lower {
+      position: absolute;
+      left: 50%;
+      bottom: 4.2rem;
+      width: min(920px, 92vw);
+      text-align: center;
+      transform: translateX(-50%) translateY(14px);
+      opacity: 0;
+      transition: opacity 700ms ease, transform 700ms ease;
+      z-index: 4;
+      pointer-events: auto;
+    }
+
+    .hero-lower .tagline {
+      margin: 0.9rem 0 0;
+      font-size: clamp(1rem, 1.7vw, 1.35rem);
+      letter-spacing: 0.03em;
+      color: #fff2cf;
+      text-shadow: none;
+    }
+
+    .hero-lower .hero-copy {
+      margin: 1rem auto 0;
+      max-width: 62ch;
+      font-size: clamp(0.98rem, 1.7vw, 1.14rem);
+      line-height: 1.55;
+      color: #f4f8ff;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
+    }
+
+    .hero-ctas {
+      margin-top: 1.15rem;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+    }
+
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.65rem 1.05rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      color: #f7fbff;
+      background: rgba(6, 12, 24, 0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease;
+    }
+
+    .hero-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .hero-btn.primary {
+      background: rgba(248, 104, 36, 0.25);
+      border-color: rgba(255, 213, 164, 0.6);
+      box-shadow: 0 0 18px rgba(248, 104, 36, 0.2);
+    }
+
+    .hero-btn.secondary {
+      background: rgba(8, 16, 31, 0.42);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .teaser.done .main-title {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+    }
+
+    .teaser.done .hero-lower {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #ffe7b5;
+      transition: opacity 600ms ease;
+    }
+
+    .teaser.done .scroll-indicator {
+      opacity: 0.95;
+      animation: pulse 1800ms ease-in-out infinite;
+    }
+
+    .details {
+      position: relative;
+      background: linear-gradient(180deg, rgba(2, 9, 22, 0.92) 0%, rgba(7, 16, 34, 0.95) 100%);
+      padding: clamp(3rem, 7vw, 6rem) 1.2rem 4.5rem;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .details::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(180deg, rgba(3, 8, 18, 0.58), rgba(3, 8, 18, 0.78)),
+        url("./All too well class..png");
+      background-size: cover;
+      background-position: center;
+      opacity: 0.34;
+      z-index: 0;
+    }
+
+    .leaf-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .leaf {
+      position: absolute;
+      top: -16vh;
+      left: var(--start-x);
+      width: var(--leaf-size);
+      height: calc(var(--leaf-size) * 0.72);
+      opacity: 0.2;
+      background: radial-gradient(
+        ellipse at 35% 35%,
+        var(--glow-core) 0%,
+        var(--glow-mid) 42%,
+        rgba(0, 0, 0, 0) 78%
+      );
+      border-radius: 58% 42% 62% 38% / 56% 44% 64% 36%;
+      transform: rotate(var(--leaf-rot));
+      filter: blur(0.2px);
+      animation:
+        leaf-fall var(--fall-duration) linear var(--fall-delay) infinite,
+        leaf-sway var(--sway-duration) ease-in-out var(--sway-delay) infinite alternate;
+    }
+
+    .details-inner {
+      position: relative;
+      z-index: 3;
+      width: min(1100px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 1.35rem;
+      grid-template-columns: 1.1fr 1fr;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.012), rgba(173, 200, 255, 0.003));
+      backdrop-filter: blur(10px) saturate(118%);
+      -webkit-backdrop-filter: blur(10px) saturate(118%);
+      border-color: rgba(255, 255, 255, 0.055);
+      border-radius: 34px;
+      padding: clamp(1.25rem, 2.8vw, 2rem);
+      box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.09),
+        inset 0 1px 0 rgba(255, 255, 255, 0.065);
+    }
+
+    .card h2,
+    .card h3 {
+      margin: 0;
+      font-family: "Cinzel", Georgia, serif;
+      letter-spacing: 0.035em;
+      font-weight: 500;
+      color: #ffffff;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
+    }
+
+    .card h2 {
+      font-size: clamp(1.25rem, 2.3vw, 2rem);
+      margin-bottom: 0.95rem;
+    }
+
+    .card h3 {
+      font-size: clamp(1rem, 1.8vw, 1.3rem);
+      margin-bottom: 0.6rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: #f7fbff;
+      line-height: 1.75;
+      font-weight: 500;
+      letter-spacing: 0.005em;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.46);
+    }
+
+    .card p + p,
+    .card ul {
+      margin-top: 0.85rem;
+    }
+
+    .card .mini-note {
+      margin-top: 0.8rem;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: #e7f0ff;
+    }
+
+    .card .info-cta-wrap {
+      margin-top: 1.05rem;
+    }
+
+    .card .reassurance {
+      margin-top: 0.7rem;
+      font-size: 0.84rem;
+      line-height: 1.45;
+      color: rgba(242, 246, 255, 0.72);
+    }
+
+    .card ul {
+      padding-left: 1.05rem;
+      color: #fbfdff;
+      font-weight: 500;
+      line-height: 1.72;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.42);
+    }
+
+    .card li + li {
+      margin-top: 0.62rem;
+    }
+
+    .card strong {
+      color: #fff6de;
+      font-weight: 700;
+    }
+
+    .card a {
+      color: #ffe0ba;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .dotless {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .dotless li {
+      position: relative;
+      padding-left: 1rem;
+    }
+
+    .dotless li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #ffd19a;
+    }
+
+    .callout {
+      border-left: 3px solid rgba(248, 144, 77, 0.9);
+      padding-left: 0.9rem;
+      color: #f8e7cf;
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .site-disclaimer {
+      width: min(1100px, 100%);
+      margin: 2.3rem auto 0;
+      padding: 0.75rem 0.35rem 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      color: rgba(242, 246, 255, 0.5);
+      font-size: 0.74rem;
+      line-height: 1.55;
+      letter-spacing: 0.01em;
+      position: relative;
+      z-index: 3;
+    }
+
+    .site-disclaimer strong {
+      font-weight: 500;
+      color: rgba(249, 251, 255, 0.62);
+    }
+
+    .control-btn {
+      position: fixed;
+      z-index: 20;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(6, 12, 24, 0.36);
+      color: #f5f9ff;
+      font: 500 0.81rem/1.1 "Manrope", "Avenir Next", sans-serif;
+      border-radius: 999px;
+      padding: 0.55rem 0.78rem;
+      letter-spacing: 0.02em;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      cursor: pointer;
+      transition: background-color 140ms ease, opacity 180ms ease;
+    }
+
+    .control-btn:hover {
+      background: rgba(6, 12, 24, 0.56);
+    }
+
+    .control-btn:focus-visible,
+    a:focus-visible {
+      outline: 2px solid #ffe3ba;
+      outline-offset: 3px;
+    }
+
+    .skip-intro-btn {
+      top: 1rem;
+      right: 1rem;
+    }
+
+    body:not(.locked) .skip-intro-btn {
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    .motion-btn {
+      right: 1rem;
+      bottom: 1rem;
+    }
+
+    .reduce-motion-manual .lyric,
+    .reduce-motion-manual .main-title,
+    .reduce-motion-manual .scroll-indicator,
+    .reduce-motion-manual .leaf {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    @media (max-width: 920px) {
+      .details-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .lyric {
+        font-size: clamp(1rem, 4.2vw, 1.4rem);
+        max-width: 84vw;
+      }
+
+      .lyric:nth-child(1) {
+        top: 14%;
+      }
+
+      .lyric:nth-child(2) {
+        top: 30%;
+      }
+
+      .lyric:nth-child(3) {
+        bottom: 29%;
+      }
+
+      .lyric:nth-child(4) {
+        bottom: 18%;
+      }
+
+      .main-title {
+        top: -4.6rem;
+      }
+
+      .details::before {
+        background-position: 60% center;
+      }
+
+      .hero-lower {
+        bottom: 4rem;
+        width: min(94vw, 760px);
+      }
+
+      .hero-lower .hero-copy {
+        font-size: clamp(0.92rem, 3vw, 1rem);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .leaf {
+        opacity: 0.58;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .lyric,
+      .main-title,
+      .scroll-indicator {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .lyric {
+        opacity: 1;
+        transform: none;
+      }
+
+      .main-title {
+        opacity: 1;
+        transform: none;
+      }
+
+      .leaf {
+        animation: none !important;
+        opacity: 0.2;
+      }
+
+      body.locked {
+        overflow: auto;
+        height: auto;
+      }
+    }
+
+    @media (prefers-contrast: more) {
+      .card {
+        background: linear-gradient(145deg, rgba(7, 14, 26, 0.46), rgba(10, 18, 30, 0.34));
+        border-color: rgba(255, 255, 255, 0.24);
+      }
+
+      .card h2,
+      .card h3,
+      .card p,
+      .card ul {
+        text-shadow: none;
+      }
+    }
+
+    @keyframes lyric-arrival {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+      }
+    }
+
+    @keyframes lyric-hover {
+      0% {
+        transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+      }
+
+      100% {
+        transform: translate3d(var(--hover-x), var(--hover-y), 0) scale(1) rotate(var(--hover-rot));
+      }
+    }
+
+    @keyframes lyric-converge {
+      0% {
+        opacity: 1;
+        filter: blur(0px);
+      }
+
+      82% {
+        opacity: 1;
+        filter: blur(0px);
+      }
+
+      100% {
+        opacity: 1;
+        filter: blur(0px);
+        transform: translate3d(var(--to-x), var(--to-y), 0) scale(0.82) rotate(var(--to-rot));
+      }
+    }
+
+    .teaser.title-on .lyric {
+      animation: none !important;
+      opacity: 0 !important;
+      transition: opacity 180ms linear;
+    }
+
+    @keyframes title-materialize {
+      0% {
+        opacity: 0;
+        filter: blur(8px);
+        transform: scale(0.92) translateY(10px);
+      }
+
+      55% {
+        opacity: 0.72;
+        filter: blur(2px);
+      }
+
+      100% {
+        opacity: 1;
+        filter: blur(0);
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      50% {
+        transform: translateX(-50%) translateY(5px);
+      }
+    }
+
+    @keyframes leaf-fall {
+      from {
+        transform: translate3d(0, -15vh, 0) rotate(var(--leaf-rot));
+      }
+
+      to {
+        transform: translate3d(var(--fall-drift), 220vh, 0) rotate(calc(var(--leaf-rot) + 290deg));
+      }
+    }
+
+    @keyframes leaf-sway {
+      from {
+        margin-left: -1.8vw;
+      }
+
+      to {
+        margin-left: 1.8vw;
+      }
+    }
+  </style>
+</head>
+<body class="locked">
+  <button class="control-btn skip-intro-btn" type="button" id="skip-intro" aria-controls="course-info">Skip Intro</button>
+  <button class="control-btn motion-btn" type="button" id="motion-toggle" aria-pressed="false">Reduce Motion</button>
+
+  <main id="main-content">
+  <section class="teaser" id="teaser" aria-label="Course teaser sequence">
+    <div class="lyrics-layer" aria-hidden="true">
+      <div class="lyric">It&rsquo;s been a long time coming</div>
+      <div class="lyric">Something med school did not cover</div>
+      <div class="lyric">I once believed love would be burning red</div>
+      <div class="lyric">You don&rsquo;t get to tell me about sad</div>
+      <div class="lyric">Are you ready for it?</div>
+    </div>
+
+    <div class="main-title" aria-live="polite">
+      <h1>IDS 2935: All Too Well: Understanding Relationships through Taylor Swift</h1>
+    </div>
+
+    <div class="hero-lower" aria-label="Course quick details and actions">
+      <p class="tagline">Quest 1 &bull; Fall 2026 &bull; In-person</p>
+      <p class="hero-copy">Explore how interpersonal communication shapes love, friendship, identity, conflict, and repair&mdash;using Taylor Swift&rsquo;s music, public persona, and fandom as a sustained case study.</p>
+    </div>
+
+    <div class="scroll-indicator">Scroll for more</div>
+  </section>
+
+  <section class="details" id="course-info" aria-label="More course information">
+    <div class="leaf-layer" id="leaf-layer" aria-hidden="true"></div>
+    <div class="details-inner">
+      <article class="card wide">
+        <h2>What is this course?</h2>
+        <p>In a world where love and friendship unfold not only face-to-face but also across screens, lyrics, and timelines, this course explores how interpersonal communication shapes our closest relationships.</p>
+        <p>Using Taylor Swift&rsquo;s music, public persona, and fandom as a sustained case study, we&rsquo;ll examine how people communicate emotion, perform identity, negotiate intimacy, manage conflict, and navigate change.</p>
+      </article>
+
+      <article class="card">
+        <h2>Course at a glance</h2>
+        <ul>
+          <li>Fall 2026 &bull; In-person</li>
+          <li>Lecture: Mon &amp; Wed, 12:50&ndash;1:40 p.m. (Period 6)</li>
+          <li>Discussion: Fri, 12:50&ndash;1:40 p.m. (Period 6)</li>
+          <li>Quest 1</li>
+          <li>Writing Requirement: 2,000 words (WR)</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>What we&rsquo;ll explore</h2>
+        <ul>
+          <li>Emotion, self-presentation, and how self-concept is negotiated in relationships</li>
+          <li>Relationship beginnings, maintenance, and endings</li>
+          <li>Conflict styles, repair, and forgiveness</li>
+          <li>Disclosure, boundaries, and privacy ethics</li>
+          <li>Digital intimacy, parasocial relationships, and fan culture</li>
+        </ul>
+      </article>
+
+      <article class="card wide">
+        <h2>Essential questions</h2>
+        <p class="callout">Together we&rsquo;ll ask:</p>
+        <ul>
+          <li>How do we communicate vulnerability and power in close relationships?</li>
+          <li>What can popular music teach us about connection, conflict, and repair?</li>
+          <li>What do our stories of love reveal about the human desire for meaning, self-concept, and belonging?</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>What you&rsquo;ll do</h2>
+        <ul>
+          <li>Analyze lyrics, media, and relational narratives through interpersonal theory</li>
+          <li>Apply concepts like social penetration, relational dialectics, and communication privacy management</li>
+          <li>Write analytically and reflectively (meets UF WR requirement)</li>
+          <li>Complete discussion-based activities and a final project with creative or analytical options</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>Materials</h2>
+        <p>No textbooks required. Readings and educational media are provided in Canvas.</p>
+        <ul>
+          <li>Students need access to a music streaming platform (Spotify/Apple Music/YouTube)</li>
+          <li>Students need Canvas access for readings, lyric analysis, and prompts</li>
+        </ul>
+        <p class="mini-note">Suggested: Netflix (Miss Americana) and Disney+ (Eras Tour films) &mdash; clips also shown in class.</p>
+      </article>
+
+      <article class="card wide">
+        <h2>Need more information?</h2>
+        <p><strong>Dr. Benjamin Gaddis</strong><br />William &amp; Grace Dial Center for Speech and Communication Studies</p>
+        <p>If you&rsquo;d like more information about this course, including the syllabus, assignments, or expectations, please use the form below. This is the best way to request details or ask questions.</p>
+        <p class="info-cta-wrap">
+          <a class="hero-btn primary" href="https://forms.office.com/r/W7x0Raphvg" target="_blank" rel="noopener noreferrer" aria-label="Request more information about IDS 2935 All Too Well">Request more information</a>
+        </p>
+        <p class="reassurance">Submitting this form does not commit you to enrolling.</p>
+      </article>
+    </div>
+
+    <footer class="site-disclaimer" aria-label="Disclaimer">
+      <strong>Disclaimer</strong><br />
+      This is an independent educational course inspired by themes, storytelling, and cultural impact found in the music and lyrics of Taylor Swift. All references are used for scholarly discussion and instructional purposes. This course and website are not affiliated with, endorsed by, or sponsored by Taylor Swift or her representatives. Song lyrics referenced on this site are the property of their respective rights holders.
+    </footer>
+  </section>
+  </main>
+
+  <script>
+    (() => {
+      const teaser = document.getElementById("teaser");
+      const lyrics = Array.from(document.querySelectorAll(".lyric"));
+      const title = document.querySelector(".main-title");
+      const leafLayer = document.getElementById("leaf-layer");
+      const skipIntroBtn = document.getElementById("skip-intro");
+      const motionToggleBtn = document.getElementById("motion-toggle");
+      const courseInfo = document.getElementById("course-info");
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const burstDelay = 10300;
+      const titleStartOffset = 1700;
+      const revealDelay = 13300;
+      const unlockDelay = 14600;
+
+      function setCenterVectors() {
+        const target = title.getBoundingClientRect();
+        const targetX = target.left + target.width / 2;
+        const targetY = target.top + target.height / 2;
+
+        lyrics.forEach((line) => {
+          const rect = line.getBoundingClientRect();
+          const originX = rect.left + rect.width / 2;
+          const originY = rect.top + rect.height / 2;
+          const driftX = (Math.random() * 6) - 3;
+          const driftY = (Math.random() * 6) - 3;
+          line.style.setProperty("--to-x", `${(targetX - originX + driftX).toFixed(1)}px`);
+          line.style.setProperty("--to-y", `${(targetY - originY + driftY).toFixed(1)}px`);
+        });
+      }
+
+      function createLeaves(count = 34) {
+        if (!leafLayer) {
+          return;
+        }
+
+        for (let i = 0; i < count; i += 1) {
+          const leaf = document.createElement("span");
+          leaf.className = "leaf";
+          const startX = Math.random() * 100;
+          const size = 18 + Math.random() * 16;
+          const duration = 24 + Math.random() * 20;
+          const delay = -Math.random() * duration;
+          const swayDuration = 2.8 + Math.random() * 2.7;
+          const swayDelay = -Math.random() * 2.8;
+          const drift = (Math.random() * 26) - 13;
+          const rot = (Math.random() * 55) - 25;
+          const palette = [
+            ["rgba(255, 228, 140, 0.32)", "rgba(255, 191, 79, 0.16)"],
+            ["rgba(255, 169, 96, 0.3)", "rgba(229, 102, 51, 0.15)"],
+            ["rgba(255, 120, 92, 0.28)", "rgba(181, 58, 45, 0.14)"]
+          ];
+          const [core, mid] = palette[Math.floor(Math.random() * palette.length)];
+
+          leaf.style.setProperty("--start-x", `${startX.toFixed(2)}%`);
+          leaf.style.setProperty("--leaf-size", `${size.toFixed(1)}px`);
+          leaf.style.setProperty("--fall-duration", `${duration.toFixed(2)}s`);
+          leaf.style.setProperty("--fall-delay", `${delay.toFixed(2)}s`);
+          leaf.style.setProperty("--sway-duration", `${swayDuration.toFixed(2)}s`);
+          leaf.style.setProperty("--sway-delay", `${swayDelay.toFixed(2)}s`);
+          leaf.style.setProperty("--fall-drift", `${drift.toFixed(2)}vw`);
+          leaf.style.setProperty("--leaf-rot", `${rot.toFixed(1)}deg`);
+          leaf.style.setProperty("--glow-core", core);
+          leaf.style.setProperty("--glow-mid", mid);
+
+          leafLayer.appendChild(leaf);
+        }
+      }
+
+      function finishIntro(goToContent = false) {
+        teaser.classList.add("bursting", "title-on", "done");
+        document.body.classList.remove("locked");
+        if (goToContent && courseInfo) {
+          courseInfo.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+
+      if (skipIntroBtn) {
+        skipIntroBtn.addEventListener("click", () => {
+          finishIntro(true);
+        });
+      }
+
+      if (motionToggleBtn) {
+        motionToggleBtn.addEventListener("click", () => {
+          const enabled = document.body.classList.toggle("reduce-motion-manual");
+          motionToggleBtn.setAttribute("aria-pressed", enabled ? "true" : "false");
+          motionToggleBtn.textContent = enabled ? "Motion Reduced" : "Reduce Motion";
+          if (enabled && document.body.classList.contains("locked")) {
+            finishIntro(false);
+          }
+        });
+      }
+
+      if (reducedMotion) {
+        finishIntro(false);
+        return;
+      }
+
+      createLeaves();
+
+      window.setTimeout(() => {
+        setCenterVectors();
+        teaser.classList.add("bursting");
+      }, burstDelay);
+
+      window.setTimeout(() => {
+        teaser.classList.add("title-on");
+      }, burstDelay + titleStartOffset);
+
+      window.setTimeout(() => {
+        teaser.classList.add("done");
+      }, revealDelay);
+
+      window.setTimeout(() => {
+        document.body.classList.remove("locked");
+      }, unlockDelay);
+    })();
+  </script>
+</body>
+</html>
